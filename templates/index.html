@@ -1,11 +1,28 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body></body>
-</html>
+{% extends 'layouts/base.html' %} {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 text-center">
+    <h1 class="display-5 fw-bold my-4">Dixionary</h1>
+    <form action="#" method="post">
+      <div class="input-group input-group-lg">
+        {% csrf_token %}
+        <input
+          type="search"
+          class="form-control"
+          placeholder="Search for a word, or phrase"
+          aria-label="Example text with button addon"
+          aria-describedby="button-addon1"
+        />
+        <button class="btn btn-primary" type="button" id="button-addon1">
+          Search
+        </button>
+      </div>
+    </form>
+    <p class="text-muted fs-5 my-4">
+      A cloud sourced dictionary built using Django 4 and Bootstrap 5. Users can
+      add languages, words, definitions, translations, and like the best
+      definitions or translations. We're also able to connect to third party
+      dictionaries.
+    </p>
+  </div>
+</div>
+{% endblock %}

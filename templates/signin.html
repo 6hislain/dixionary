@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %} {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-light text-center text-uppercase">Sign In</div>
+      <div class="card-body">
+        <form action="#" method="post">
+          <div class="mb-2">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" />
+          </div>
+          <div class="mb-2">
+            <label for="username" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" />
+          </div>
+          {% csrf_token %}
+          <button class="btn btn-primary" type="submit">Continue</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

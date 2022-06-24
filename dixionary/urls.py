@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("", include("core.urls")),
+    path("admin/", admin.site.urls),
+    # path("extra/", include("extra.urls")),  # 3rd party APIs
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

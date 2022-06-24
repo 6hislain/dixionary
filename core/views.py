@@ -22,9 +22,17 @@ def index(request):
     return render(request, "index.html")
 
 
+def about(request):
+    return render(request, "about.html")
+
+
+def stats(request):
+    return render(request, "stats.html")
+
+
 @login_required(login_url="signin")
 def settings(request):
-    user_profile = Profile.object.get(user=request.user)
+    user_profile = Profile.objects.get(user=request.user)
 
     if request.method == "GET":
         return render(request, "settings.html", {"user_profile": user_profile})
@@ -38,6 +46,11 @@ def settings(request):
         user_profile.image = image
         user_profile.bio = request.POST["bio"]
         user_profile.save()
+
+
+@login_required(login_url="signin")
+def dashboard(request):
+    return render(request, "dashboard.html")
 
 
 def signup(request):
