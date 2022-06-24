@@ -10,40 +10,82 @@ User = get_user_model()
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    custom_user_id = models.IntegerField()
+    my_user_id = models.IntegerField()
     bio = models.TextField(blank=True)
-    image = models.ImageField(
-        upload_to="profile_images", default="blank-profile-picture.png"
-    )
-    location = models.CharField(max_length=100, blank=True)
+    word_count = models.IntegerField(default=0)
+    definition_count = models.IntegerField(default=0)
+    translation_count = models.IntegerField(default=0)
+    image = models.ImageField(upload_to="profiles", blank=True)
 
     def __str__(self):
         return self.user.username
 
 
-class Post(models.Model):
+class Language(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    user = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="post_images")
-    caption = models.TextField()
+    language = models.CharField(max_length=200)
+    flag = models.ImageField(upload_to="flags", blank=True)
+    created_at = models.DateTimeField(default=datetime.now)
+    word_count = models.IntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.language
+
+
+class Word(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    word = models.CharField(max_length=200)
+    image = models.ImageField(upload_to="words", blank=True)
+    created_at = models.DateTimeField(default=datetime.now)
+    definition_count = models.IntegerField(default=0)
+    translation_count = models.IntegerField(default=0)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.word
+
+
+class Definition(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    definition = models.TextField()
     created_at = models.DateTimeField(default=datetime.now)
     like_count = models.IntegerField(default=0)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user
+        return self.definition
 
 
-class PostLike(models.Model):
-    post_id = models.CharField(max_length=500)
-    username = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.username
-
-
-class FollowersCount(models.Model):
-    follower = models.CharField(max_length=100)
-    user = models.CharField(max_length=100)
+class DefinitionLike(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    created_at = models.DateTimeField(default=datetime.now)
+    definition = models.ForeignKey(Definition, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user
+        return self.definition.definition
+
+
+class Translation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    translation = models.TextField()
+    created_at = models.DateTimeField(default=datetime.now)
+    like_count = models.IntegerField(default=0)
+    definition = models.ForeignKey(Definition, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.translation
+
+
+class TranslationLike(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    created_at = models.DateTimeField(default=datetime.now)
+    translation = models.ForeignKey(Translation, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.translation.translation

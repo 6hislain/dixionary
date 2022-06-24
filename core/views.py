@@ -3,8 +3,16 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Post, PostLike, FollowersCount
 from itertools import chain
+from .models import (
+    Word,
+    Profile,
+    Language,
+    Definition,
+    DefinitionLike,
+    Translation,
+    TranslationLike,
+)
 import random
 
 # Create your views here.
@@ -29,7 +37,6 @@ def settings(request):
 
         user_profile.image = image
         user_profile.bio = request.POST["bio"]
-        user_profile.location = request.POST["location"]
         user_profile.save()
 
 
@@ -64,9 +71,7 @@ def signup(request):
         auth.login(request, user_login)
 
         user_model = User.objects.get(email=email)
-        new_profile = Profile.objects.create(
-            user=user_model, custom_user_id=user_model.id
-        )
+        new_profile = Profile.objects.create(user=user_model, my_user_id=user_model.id)
         new_profile.save()
         return redirect("/")
 
