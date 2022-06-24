@@ -86,7 +86,7 @@ def signup(request):
         user_model = User.objects.get(email=email)
         new_profile = Profile.objects.create(user=user_model, my_user_id=user_model.id)
         new_profile.save()
-        return redirect("/")
+        return redirect("dashboard")
 
 
 def signin(request):
@@ -103,7 +103,7 @@ def signin(request):
             return redirect("signin")
 
         auth.login(request, user)
-        return redirect("/")
+        return redirect("dashboard")
 
 
 @login_required(login_url="signin")
