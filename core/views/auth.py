@@ -3,8 +3,9 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from itertools import chain
-from .models import (
+from ..models import (
     Word,
     Profile,
     Language,
@@ -18,41 +19,7 @@ import random
 # Create your views here.
 
 
-def index(request):
-    return render(request, "index.html")
-
-
-def about(request):
-    return render(request, "about.html")
-
-
-def stats(request):
-    return render(request, "stats.html")
-
-
-@login_required(login_url="signin")
-def settings(request):
-    user_profile = Profile.objects.get(user=request.user)
-
-    if request.method == "GET":
-        return render(request, "settings.html", {"user_profile": user_profile})
-
-    if request.method == "POST":
-        image = user_profile.image
-
-        if request.FILES.get("image") != None:
-            image = request.FILES.get("image")
-
-        user_profile.image = image
-        user_profile.bio = request.POST["bio"]
-        user_profile.save()
-
-
-@login_required(login_url="signin")
-def dashboard(request):
-    return render(request, "dashboard.html")
-
-
+@require_http_methods(['GET', 'POST'])
 def signup(request):
     if request.method == "GET":
         return render(request, "signup.html")
@@ -89,6 +56,7 @@ def signup(request):
         return redirect("dashboard")
 
 
+@require_http_methods(['GET', 'POST'])
 def signin(request):
     if request.method == "GET":
         return render(request, "signin.html")

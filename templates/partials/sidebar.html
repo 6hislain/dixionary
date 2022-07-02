@@ -1,0 +1,32 @@
+<div class="col-md-2">
+  <div class="card card-body text-center shadow-sm">
+    <h5 class="text-truncate fw-bold">{{ user.username }}</h5>
+    <p class="text-truncate m-0">{{ user.email }}</p>
+  </div>
+  <div class="list-group my-3 shadow-sm">
+    <a href="{% url 'home' %}" class="list-group-item list-group-item-action">
+      Home <span class="float-end">&rarr;</span>
+    </a>
+    <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action active" aria-current="true">
+      Dashboard <span class="float-end">&rarr;</span>
+    </a>
+    <a href="{% url 'word.index' %}" class="list-group-item list-group-item-action">
+      Word <span class="float-end">&rarr;</span>
+    </a>
+    <a href="{% url 'language.index' %}" class="list-group-item list-group-item-action">
+      Language <span class="float-end">&rarr;</span>
+    </a>
+    <a href="{% url 'settings' %}" class="list-group-item list-group-item-action">
+      Settings <span class="float-end">&rarr;</span>
+    </a>
+    <a href="{% url 'profile' id=user.id %}" class="list-group-item list-group-item-action">
+      User profile <span class="float-end">&rarr;</span>
+    </a>
+    <a href="{% url 'stats' %}" class="list-group-item list-group-item-action">
+      Stats <span class="float-end">&rarr;</span>
+    </a>
+    <a href="{% url 'logout' %}" class="list-group-item list-group-item-action">
+      Log out <span class="float-end">&rarr;</span>
+    </a>
+  </div>
+</div>
