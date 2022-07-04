@@ -22,9 +22,15 @@ urlpatterns = [
     path("definition", views.definition_index, name="definition.index"),
     path("definition/create", views.definition_create, name="definition.create"),
     path("definition/<uuid:id>/edit", views.definition_edit, name="definition.edit"),
-    path("definition/<uuid:id>/delete", views.definition_delete, name="definition.delete"),
+    path(
+        "definition/<uuid:id>/delete", views.definition_delete, name="definition.delete"
+    ),
     path("translation", views.translation_index, name="translation.index"),
     path("translation/create", views.translation_create, name="translation.create"),
     path("translation/<uuid:id>/edit", views.translation_edit, name="translation.edit"),
-    path("translation/<uuid:id>/delete", views.translation_delete, name="translation.delete"),
+    path(
+        "translation/<uuid:id>/delete",
+        views.translation_delete,
+        name="translation.delete",
+    ),
 ]

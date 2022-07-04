@@ -19,7 +19,7 @@ import random
 # Create your views here.
 
 
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def signup(request):
     if request.method == "GET":
         return render(request, "signup.html")
@@ -56,7 +56,7 @@ def signup(request):
         return redirect("dashboard")
 
 
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def signin(request):
     if request.method == "GET":
         return render(request, "signin.html")

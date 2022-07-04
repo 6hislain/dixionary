@@ -5,62 +5,69 @@ from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 from django.http import HttpResponse
 
-@require_http_methods(['GET'])
+
+@require_http_methods(["GET"])
 @login_required(login_url="signin")
 def language_index(request):
-	languages = Language.objects.all()
-	return render(request, 'language/index.html', {'languages': languages})
+    languages = Language.objects.all()
+    return render(request, "language/index.html", {"languages": languages})
+
 
 @login_required(login_url="signin")
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def language_create(request):
-	if request.method == 'GET':
-		return render(request, 'language/create.html')
+    if request.method == "GET":
+        return render(request, "language/create.html")
 
-	elif request.method == 'POST':
-		language = request.POST['language']
+    elif request.method == "POST":
+        language = request.POST["language"]
 
-		if Language.objects.filter(language=language).exists():
-			messages.info(request, 'Language exists already')
-			return redirect('language.create')
+        if Language.objects.filter(language=language).exists():
+            messages.info(request, "Language exists already")
+            return redirect("language.create")
 
-		new_language = Language(language=language, user_id=request.user.id)
+        new_language = Language(language=language, user_id=request.user.id)
 
-		if request.FILES.get("image") != None:
-			new_language = Language(language=language, flag=request.FILES.get("image"), user_id=request.user.id)
+        if request.FILES.get("image") != None:
+            new_language = Language(
+                language=language,
+                flag=request.FILES.get("image"),
+                user_id=request.user.id,
+            )
 
-		new_language.save()
-		messages.info(request, 'Language created')
+        new_language.save()
+        messages.info(request, "Language created")
 
-		return redirect('language.index')
+        return redirect("language.index")
+
 
 @login_required(login_url="signin")
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(["GET", "POST"])
 def language_edit(request, id):
-	language = get_object_or_404(Language, id=id)
+    language = get_object_or_404(Language, id=id)
 
-	if request.method=='GET':
-		return render(request, 'language/edit.html', {'language': language})
+    if request.method == "GET":
+        return render(request, "language/edit.html", {"language": language})
 
-	elif request.method=='POST':
-		language.language = request.POST['language']
+    elif request.method == "POST":
+        language.language = request.POST["language"]
 
-		if request.FILES.get("image") != None:
-			language.flag = request.FILES.get("image")
+        if request.FILES.get("image") != None:
+            language.flag = request.FILES.get("image")
 
-		if request.user.id == language.user_id:
-			language.save()
-			messages.info(request, 'Language updated')
+        if request.user.id == language.user_id:
+            language.save()
+            messages.info(request, "Language updated")
 
-		return redirect('language.index')
+        return redirect("language.index")
 
 
 @login_required(login_url="signin")
 def language_delete(request, id):
-	language = get_object_or_404(Language, id=id)
+    language = get_object_or_404(Language, id=id)
 
-	if request.user.id == language.user_id:
-		language.delete()
-		messages.info(request, 'Language deleted')
+    if request.user.id == language.user_id:
+        language.delete()
+        messages.info(request, "Language deleted")
 
-	return redirect('language.index')
+    return redirect("language.index")

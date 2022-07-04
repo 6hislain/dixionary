@@ -61,4 +61,13 @@ def dashboard(request):
     definition_count = Definition.objects.count()
     translation_count = Translation.objects.count()
 
-    return render(request, "dashboard.html", {'word_count': word_count, 'language_count': language_count, 'definition_count': definition_count, 'translation_count': translation_count})
+    return render(
+        request,
+        "dashboard.html",
+        {
+            "word_count": word_count,
+            "language_count": language_count,
+            "definition_count": definition_count,
+            "translation_count": translation_count,
+        },
+    )
