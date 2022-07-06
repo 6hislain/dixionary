@@ -3,7 +3,7 @@
 {% block content %}
 <div class="d-flex justify-content-between">
   <h4 class="my-auto">All Languages</h4>
-  <a href="{% url 'language.create' %}" class="btn btn-secondary">Add Language</a>
+  <a href="{% url 'dictionary:language.create' %}" class="btn btn-secondary">Add Language</a>
 </div>
 <div class='table-responsive my-3'>
   {% include 'partials/messages.html' %}
@@ -25,8 +25,8 @@
         </td>
         <td>{{ language.language }}</td>
         <td>
-          <a href="{% url 'language.edit' id=language.id %}" class="btn btn-success">Edit</a>
-          <a href="{% url 'language.delete' id=language.id %}" class="btn btn-danger">Delete</a>
+          <a href="{% url 'dictionary:language.edit' id=language.id %}" class="btn btn-success">Edit</a>
+          <a href="{% url 'dictionary:language.delete' id=language.id %}" class="btn btn-danger">Delete</a>
         </td>
       </tr>
       {% endfor %}

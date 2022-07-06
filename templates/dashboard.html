@@ -5,25 +5,25 @@
   <div class="col-md-3 col-sm-6 mb-3">
     <div class="card card-body shadow-sm">
       <h1>{{ language_count }}</h1>
-      <a href="{% url 'language.index' %}" class='btn btn-sm btn-outline-primary'>Language</a>
+      <a href="{% url 'dictionary:language.index' %}" class='btn btn-sm btn-outline-primary'>Language</a>
     </div>
   </div>
   <div class="col-md-3 col-sm-6 mb-3">
     <div class="card card-body shadow-sm">
       <h1>{{ word_count }}</h1>
-      <a href="{% url 'word.index' %}" class='btn btn-sm btn-outline-primary'>Word</a>
+      <a href="{% url 'dictionary:word.index' %}" class='btn btn-sm btn-outline-primary'>Word</a>
     </div>
   </div>
   <div class="col-md-3 col-sm-6 mb-3">
     <div class="card card-body shadow-sm">
       <h1>{{ definition_count }}</h1>
-      <a href="{% url 'definition.index' %}" class='btn btn-sm btn-outline-primary'>Definition</a>
+      <a href="{% url 'dictionary:definition.index' %}" class='btn btn-sm btn-outline-primary'>Definition</a>
     </div>
   </div>
   <div class="col-md-3 col-sm-6 mb-3">
     <div class="card card-body shadow-sm">
       <h1>{{ translation_count }}</h1>
-      <a href="{% url 'translation.index' %}" class='btn btn-sm btn-outline-primary'>Translation</a>
+      <a href="{% url 'dictionary:translation.index' %}" class='btn btn-sm btn-outline-primary'>Translation</a>
     </div>
   </div>
 </div>

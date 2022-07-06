@@ -1,22 +1,32 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User, auth
-from django.contrib import messages
-from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
-from itertools import chain
-from ..models import (
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, auth
+from django.http import HttpResponse
+from django.contrib import messages
+from dictionary.models import (
     Word,
     Profile,
     Language,
     Definition,
-    DefinitionLike,
     Translation,
-    TranslationLike,
 )
-import random
 
 # Create your views here.
+
+
+def index(request):
+    return render(request, "index.html")
+
+
+def stats(request):
+    return render(request, "stats.html")
+
+
+def profile(request, id):
+    user = get_object_or_404(User, pk=id)
+
+    return HttpResponse(user)
 
 
 @require_http_methods(["GET", "POST"])
@@ -30,15 +40,15 @@ def signup(request):
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
 
-        if password != confirm_password:
+        if password == "" or password != confirm_password:
             messages.info(request, "Passwords do not match")
             return redirect("signup")
 
-        if User.objects.filter(email=email).exists():
+        if email == "" or User.objects.filter(email=email).exists():
             messages.info(request, "Email already taken")
             return redirect("signup")
 
-        if User.objects.filter(username=username).exists():
+        if username == "" or User.objects.filter(username=username).exists():
             messages.info(request, "Username already taken")
             return redirect("signup")
 
@@ -78,3 +88,40 @@ def signin(request):
 def logout(request):
     auth.logout(request)
     return redirect("/")
+
+
+@login_required(login_url="signin")
+def settings(request):
+    user_profile = Profile.objects.get(user=request.user)
+
+    if request.method == "GET":
+        return render(request, "settings.html", {"user_profile": user_profile})
+
+    if request.method == "POST":
+        image = user_profile.image
+
+        if request.FILES.get("image") != None:
+            image = request.FILES.get("image")
+
+        user_profile.image = image
+        user_profile.bio = request.POST["bio"]
+        user_profile.save()
+
+
+@login_required(login_url="signin")
+def dashboard(request):
+    word_count = Word.objects.count()
+    language_count = Language.objects.count()
+    definition_count = Definition.objects.count()
+    translation_count = Translation.objects.count()
+
+    return render(
+        request,
+        "dashboard.html",
+        {
+            "word_count": word_count,
+            "language_count": language_count,
+            "definition_count": definition_count,
+            "translation_count": translation_count,
+        },
+    )

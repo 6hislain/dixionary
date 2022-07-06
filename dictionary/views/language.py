@@ -9,8 +9,15 @@ from django.http import HttpResponse
 @require_http_methods(["GET"])
 @login_required(login_url="signin")
 def language_index(request):
-    languages = Language.objects.all()
+    languages = Language.objects.order_by("-id")[:10]
     return render(request, "language/index.html", {"languages": languages})
+
+
+@require_http_methods(["GET"])
+@login_required(login_url="signin")
+def language_show(request, id):
+    language = get_object_or_404(Language, pk=id)
+    return render(request, "language/index.html", {"language": language})
 
 
 @login_required(login_url="signin")
@@ -24,7 +31,7 @@ def language_create(request):
 
         if Language.objects.filter(language=language).exists():
             messages.info(request, "Language exists already")
-            return redirect("language.create")
+            return redirect("language:create")
 
         new_language = Language(language=language, user_id=request.user.id)
 
@@ -38,13 +45,13 @@ def language_create(request):
         new_language.save()
         messages.info(request, "Language created")
 
-        return redirect("language.index")
+        return redirect("dictionary:language.index")
 
 
 @login_required(login_url="signin")
 @require_http_methods(["GET", "POST"])
 def language_edit(request, id):
-    language = get_object_or_404(Language, id=id)
+    language = get_object_or_404(Language, pk=id)
 
     if request.method == "GET":
         return render(request, "language/edit.html", {"language": language})
@@ -59,15 +66,15 @@ def language_edit(request, id):
             language.save()
             messages.info(request, "Language updated")
 
-        return redirect("language.index")
+        return redirect("dictionary:language.index")
 
 
 @login_required(login_url="signin")
 def language_delete(request, id):
-    language = get_object_or_404(Language, id=id)
+    language = get_object_or_404(Language, pk=id)
 
     if request.user.id == language.user_id:
         language.delete()
         messages.info(request, "Language deleted")
 
-    return redirect("language.index")
+    return redirect("dictionary:language.index")
