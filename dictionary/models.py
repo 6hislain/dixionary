@@ -14,16 +14,16 @@ class Profile(models.Model):
     image = models.ImageField(upload_to="profiles", blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.username()
 
     def word_count(self):
-        return self.word_set.count
+        return self.word_set.count()
 
     def definition_count(self):
-        return self.definition_set.count
+        return self.definition_set.count()
 
     def translation_count(self):
-        return self.translation_set.count
+        return self.translation_set.count()
 
 
 class Language(models.Model):
@@ -36,9 +36,13 @@ class Language(models.Model):
     def __str__(self):
         return self.language
 
+    def word_count(self):
+        return self.word_set.count()
+
 
 class Word(models.Model):
     word = models.CharField(max_length=200)
+    slug = models.SlugField(null=False, unique=True)
     image = models.ImageField(upload_to="words", blank=True)
     created_at = models.DateTimeField(default=datetime.now)
     language = models.ForeignKey(Language, on_delete=models.CASCADE)
@@ -48,10 +52,7 @@ class Word(models.Model):
         return self.word
 
     def definition_count(self):
-        return self.definition_set.count
-
-    def translation_count(self):
-        return self.translation_set.count
+        return self.definition_set.count()
 
 
 class Definition(models.Model):
@@ -64,7 +65,10 @@ class Definition(models.Model):
         return self.definition
 
     def like_count(self):
-        return self.like_set.count
+        return self.like_set.count()
+
+    def translation_count(self):
+        return self.translation_set.count()
 
 
 class DefinitionLike(models.Model):
@@ -85,8 +89,8 @@ class Translation(models.Model):
     def __str__(self):
         return self.translation
 
-    def definition_count(self):
-        return self.definition_set.count
+    def like_count(self):
+        return self.like_set.count()
 
 
 class TranslationLike(models.Model):

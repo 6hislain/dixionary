@@ -10,11 +10,17 @@
     <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action active" aria-current="true">
       Dashboard <span class="float-end">&rarr;</span>
     </a>
+    <a href="{% url 'dictionary:language.index' %}" class="list-group-item list-group-item-action">
+      Language <span class="float-end">&rarr;</span>
+    </a>
     <a href="{% url 'dictionary:word.index' %}" class="list-group-item list-group-item-action">
       Word <span class="float-end">&rarr;</span>
     </a>
-    <a href="{% url 'dictionary:language.index' %}" class="list-group-item list-group-item-action">
-      Language <span class="float-end">&rarr;</span>
+    <a href="{% url 'dictionary:definition.index' %}" class="list-group-item list-group-item-action">
+      Definition <span class="float-end">&rarr;</span>
+    </a>
+    <a href="{% url 'dictionary:translation.index' %}" class="list-group-item list-group-item-action">
+      Translation <span class="float-end">&rarr;</span>
     </a>
     <a href="{% url 'settings' %}" class="list-group-item list-group-item-action">
       Settings <span class="float-end">&rarr;</span>

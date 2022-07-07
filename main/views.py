@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.http import HttpResponse
 from django.contrib import messages
+from django.db.models import Q
 from dictionary.models import (
     Word,
     Profile,
@@ -15,17 +16,31 @@ from dictionary.models import (
 # Create your views here.
 
 
+@require_http_methods(["GET", "POST"])
 def index(request):
-    return render(request, "index.html")
+    if request.method == "GET":
+        return render(request, "index.html")
+
+    elif request.method == "POST":
+        keyword = request.POST["keyword"]
+        definitions = Definition.objects.filter(Q(definition__icontains=keyword))
+        translations = Translation.objects.filter(Q(translation__icontains=keyword))
+
+        return render(
+            request,
+            "index.html",
+            {"definitions": definitions, "translations": translations},
+        )
 
 
+@require_http_methods(["GET"])
 def stats(request):
     return render(request, "stats.html")
 
 
+@require_http_methods(["GET"])
 def profile(request, id):
     user = get_object_or_404(User, pk=id)
-
     return HttpResponse(user)
 
 
@@ -87,10 +102,11 @@ def signin(request):
 @login_required(login_url="signin")
 def logout(request):
     auth.logout(request)
-    return redirect("/")
+    return redirect("home")
 
 
 @login_required(login_url="signin")
+@require_http_methods(["GET", "POST"])
 def settings(request):
     user_profile = Profile.objects.get(user=request.user)
 
@@ -108,6 +124,7 @@ def settings(request):
         user_profile.save()
 
 
+@require_http_methods(["GET"])
 @login_required(login_url="signin")
 def dashboard(request):
     word_count = Word.objects.count()

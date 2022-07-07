@@ -1,0 +1,36 @@
+{% extends 'layouts/admin.html' %}
+{% block title %} Edit word - Dixionary {% endblock %}
+{% block content %}
+{% include 'partials/messages.html' %}
+<div class="card shadow-sm mb-3">
+  <div class="card-header bg-light text-uppercase">Edit word</div>
+  <div class="card-body">
+    <form action="#" method="post" enctype="multipart/form-data">
+      <div class='row'>
+        <div class="col-md-6 mb-2">
+          <label for="word" class="form-label">Word</label>
+          <input type="text" class="form-control" name="word" value="{{ word.word }}" />
+        </div>
+        <div class="col-md-6 mb-2">
+          <label for="language" class="form-label">Language</label>
+          <select name='language' class='form-control'>
+            <option value="{{ word.language.id }}">{{ word.language.language }}</option>
+            {% for language in languages %}
+            <option value="{{ language.id }}">{{ language.language }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-12 mb-2">
+          <label for="image" class="form-label">Image</label>
+          <input class="form-control" type="file" name="image" accept="image/*" />
+        </div>
+      </div>
+      {% csrf_token %}
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-primary" type="submit">Continue</button>
+        <a href="{% url 'dictionary:language.index' %}" class="btn btn-secondary">View all words</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

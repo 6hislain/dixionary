@@ -1,0 +1,34 @@
+{% extends 'layouts/admin.html' %}
+{% block title %} Definition - Dixionary {% endblock %}
+{% block content %}
+<h4 class="my-auto">All Definitions</h4>
+<div class='table-responsive my-3'>
+  {% include 'partials/messages.html' %}
+  <table class="table table-hover table-bordered shadow-sm">
+    <thead>
+      <tr>
+        <th scope="col">Word</th>
+        <th scope="col">Definition</th>
+        <th scope="col">Language</th>
+        <th scope="col">Translation Count</th>
+        <th scope="col" style="width:20%">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for definition in definitions %}
+      <tr>
+        <td>{{ definition.word.word }}</td>
+        <td>{{ definition.definition }}</td>
+        <td>{{ definition.word.language }}</td>
+        <td>{{ definition.translation_count }}</td>
+        <td>
+          <a href="{% url 'dictionary:word.show' slug=definition.word.slug %}" class="btn btn-sm btn-info">View</a>
+          <a href="{% url 'dictionary:definition.edit' id=definition.id %}" class="btn btn-sm btn-success">Edit</a>
+          <a href="{% url 'dictionary:definition.delete' id=definition.id %}" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

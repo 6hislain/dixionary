@@ -1,9 +1,9 @@
-from ..models import Language
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.contrib import messages
+from ..models import Language
 
 
 @require_http_methods(["GET"])
@@ -14,7 +14,6 @@ def language_index(request):
 
 
 @require_http_methods(["GET"])
-@login_required(login_url="signin")
 def language_show(request, id):
     language = get_object_or_404(Language, pk=id)
     return render(request, "language/index.html", {"language": language})
@@ -44,7 +43,6 @@ def language_create(request):
 
         new_language.save()
         messages.info(request, "Language created")
-
         return redirect("dictionary:language.index")
 
 

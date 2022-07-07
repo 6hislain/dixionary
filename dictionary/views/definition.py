@@ -1,34 +1,35 @@
-from ..models import Word
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from ..models import Definition, Word
 
 
 @require_http_methods(["GET"])
+@login_required(login_url="signin")
 def definition_index(request):
-    words = Word.objects.all()
-    return render(request, "word/index.html", {"words": words})
+    definitions = Definition.objects.order_by("-id")[:10]
+    return render(request, "definition/index.html", {"definitions": definitions})
 
-
+@login_required(login_url="signin")
 @require_http_methods(["GET", "POST"])
-def definition_create(request):
+def definition_create(request, word_id):
+    word = get_object_or_404(Word, pk=word_id)
+
     if request.method == "GET":
-        return render(request, "word/create.html")
+        return render(request, "definition/create.html", {"word": word})
 
     elif request.method == "POST":
-        language = request.POST["language"]
+        definition = request.POST["definition"]
 
-        if Word.objects.filter(language=language).exists():
-            messages.info(request, "Language exists already")
-            return redirect("language.create")
+        new_definition = Definition(
+            word=word, definition=definition, user_id=request.user.id
+        )
+        new_definition.save()
+        return redirect("dictionary:definition.index")
 
-        new_language = Word(language=language)
-        new_language.save()
-        return redirect("language.index")
-
-
-@require_http_methods(["GET", "PUT"])
+@login_required(login_url="signin")
+@require_http_methods(["GET", "POST"])
 def definition_edit(request, id):
     pass
 

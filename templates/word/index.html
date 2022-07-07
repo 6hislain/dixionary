@@ -12,6 +12,8 @@
       <tr>
         <th scope="col" style='width:10%'>Image</th>
         <th scope="col">Word</th>
+        <th scope="col">Language</th>
+        <th scope="col">Definition Count</th>
         <th scope="col" style="width:20%">Action</th>
       </tr>
     </thead>
@@ -24,9 +26,13 @@
           {% endif %}
         </td>
         <td>{{ word.word }}</td>
+        <td>{{ word.language.language }}</td>
+        <td>{{ word.definition_count }}</td>
         <td>
-          <a href="{% url 'dictionary:word.edit' id=word.id %}" class="btn btn-success">Edit</a>
-          <a href="{% url 'dictionary:word.delete' id=word.id %}" class="btn btn-danger">Delete</a>
+          <a href="{% url 'dictionary:word.show' slug=word.slug %}" class="btn btn-sm btn-info" title='View' data-bs-toggle='tooltip'>&#10148;</a>
+          <a href="{% url 'dictionary:definition.create' word_id=word.id %}" class="btn btn-sm btn-warning">Define</a>
+          <a href="{% url 'dictionary:word.edit' id=word.id %}" class="btn btn-sm btn-success">Edit</a>
+          <a href="{% url 'dictionary:word.delete' id=word.id %}" class="btn btn-sm btn-danger" title='Delete' data-bs-toggle='tooltip'>&#10006;</a>
         </td>
       </tr>
       {% endfor %}
