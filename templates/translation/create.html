@@ -1,0 +1,44 @@
+{% extends 'layouts/admin.html' %}
+{% block title %} Add translation - Dixionary {% endblock %}
+{% block content %}
+{% include 'partials/messages.html' %}
+<div class="card shadow-sm mb-3">
+  <div class="card-header bg-light text-uppercase">Add translation</div>
+  <div class="card-body">
+    <form action="#" method="post" enctype="multipart/form-data">
+      <div class='row'>
+        <div class="col-md-4 mb-2">
+          <label for="word" class="form-label">Original word</label>
+          <input type="text" class="form-control" name="original_word" value="{{ definition.word.word }}" disabled='true' />
+        </div>
+        <div class='col-md-4 mb-2'>
+          <label for='word' class='form-label'>Translated word</label>
+          <input type='text' class='form-control' name='word' />
+        </div>
+        <div class="col-md-4 mb-2">
+          <label for="language" class="form-label">Language</label>
+          <select name='language' class='form-control'>
+            <option value=''>...</option>
+            {% for language in languages %}
+            <option value="{{ language.id }}">{{ language.language }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6 mb-2">
+            <label for="definition" class="form-label">Definition</label>
+            <textarea class='form-control' rows="5" disabled='true'>{{ definition.definition }}</textarea>
+        </div>
+        <div class="col-md-6 mb-2">
+            <label for="definition" class="form-label">Translation</label>
+            <textarea class='form-control' name='translation' rows="5"></textarea>
+        </div>
+      </div>
+      {% csrf_token %}
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-primary" type="submit">Continue</button>
+        <a href="{% url 'dictionary:definition.index' %}" class="btn btn-secondary">View definitions</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

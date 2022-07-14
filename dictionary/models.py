@@ -44,7 +44,7 @@ class Definition(models.Model):
         return self.definition
 
     def like_count(self):
-        return self.like_set.count()
+        return self.definitionlike_set.count()
 
     def translation_count(self):
         return self.translation_set.count()
@@ -60,6 +60,7 @@ class DefinitionLike(models.Model):
 
 
 class Translation(models.Model):
+    word = models.CharField(max_length=200)
     translation = models.TextField()
     created_at = models.DateTimeField(default=datetime.now)
     language = models.ForeignKey(Language, on_delete=models.CASCADE)
@@ -70,7 +71,7 @@ class Translation(models.Model):
         return self.translation
 
     def like_count(self):
-        return self.like_set.count()
+        return self.translationlike_set.count()
 
 
 class TranslationLike(models.Model):

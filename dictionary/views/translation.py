@@ -26,12 +26,16 @@ def translation_create(request, definition_id):
         )
 
     elif request.method == "POST":
+        word = request.POST["word"]
         language = request.POST["language"]
-        definition = request.POST["definition"]
         translation = request.POST["translation"]
 
         new_translation = Translation(
-            translation=translation, definition_id=definition, language_id=language
+            word=word,
+            translation=translation,
+            definition_id=definition.id,
+            language_id=language,
+            user_id=request.user.id,
         )
         new_translation.save()
         messages.info(request, "Translation created")
@@ -52,9 +56,10 @@ def translation_edit(request, id):
         )
 
     elif request.method == "POST":
+        translation.word = request.POST["word"]
         translation.language_id = request.POST["language"]
         translation.translation = request.POST["translation"]
-        translation.definition_id = request.POST["definition"]
+        translation.definition_id = translation.definition_id
 
         if request.user.id == translation.user_id:
             translation.save()

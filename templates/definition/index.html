@@ -2,7 +2,7 @@
 {% block title %} Definition - Dixionary {% endblock %}
 {% block content %}
 <h4 class="my-auto">All Definitions</h4>
-<div class='table-responsive my-3'>
+<div class="table-responsive my-3">
   {% include 'partials/messages.html' %}
   <table class="table table-hover table-bordered shadow-sm">
     <thead>
@@ -11,7 +11,8 @@
         <th scope="col">Definition</th>
         <th scope="col">Language</th>
         <th scope="col">Translation Count</th>
-        <th scope="col" style="width:20%">Action</th>
+        <th scope="col">Likes</th>
+        <th scope="col" style="width: 20%">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -21,10 +22,14 @@
         <td>{{ definition.definition }}</td>
         <td>{{ definition.word.language }}</td>
         <td>{{ definition.translation_count }}</td>
+        <td>{{ definition.like_count }}</td>
         <td>
-          <a href="{% url 'dictionary:word.show' slug=definition.word.slug %}" class="btn btn-sm btn-info">View</a>
+          <a href="{% url 'dictionary:word.show' slug=definition.word.slug %}" class="btn btn-sm btn-info" title='View' data-bs-toggle='tooltip'>&#10148;</a>
+          <a href="{% url 'dictionary:translation.create' definition_id=definition.id %}" class='btn btn-sm btn-warning'>Translate</a>
           <a href="{% url 'dictionary:definition.edit' id=definition.id %}" class="btn btn-sm btn-success">Edit</a>
-          <a href="{% url 'dictionary:definition.delete' id=definition.id %}" class="btn btn-sm btn-danger">Delete</a>
+          <a href="{% url 'dictionary:definition.delete' id=definition.id %}" class="btn btn-sm btn-danger" title="Delete" data-bs-toggle="tooltip">
+            &#10006;
+          </a>
         </td>
       </tr>
       {% endfor %}

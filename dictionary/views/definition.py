@@ -42,7 +42,7 @@ def definition_edit(request, id):
     elif request.method == "POST":
         definition.definition = request.POST["definition"]
 
-        if request.user_id == definition.user.id:
+        if request.user.id == definition.user_id:
             definition.save()
             messages.info(request, "Definition updated")
 
