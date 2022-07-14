@@ -11,6 +11,7 @@ def definition_index(request):
     definitions = Definition.objects.order_by("-id")[:10]
     return render(request, "definition/index.html", {"definitions": definitions})
 
+
 @login_required(login_url="signin")
 @require_http_methods(["GET", "POST"])
 def definition_create(request, word_id):
@@ -26,14 +27,34 @@ def definition_create(request, word_id):
             word=word, definition=definition, user_id=request.user.id
         )
         new_definition.save()
+        messages.info(request, "Definition created")
         return redirect("dictionary:definition.index")
+
 
 @login_required(login_url="signin")
 @require_http_methods(["GET", "POST"])
 def definition_edit(request, id):
-    pass
+    definition = get_object_or_404(Definition, pk=id)
+
+    if request.method == "GET":
+        return render(request, "definition/edit.html", {"definition": definition})
+
+    elif request.method == "POST":
+        definition.definition = request.POST["definition"]
+
+        if request.user_id == definition.user.id:
+            definition.save()
+            messages.info(request, "Definition updated")
+
+        return redirect("dictionary:definition.index")
 
 
-@require_http_methods(["DELETE"])
+@login_required(login_url="signin")
 def definition_delete(request, id):
-    pass
+    definition = get_object_or_404(Definition, pk=id)
+
+    if request.user.id == definition.user_id:
+        definition.delete()
+        messages.info(request, "Definition deleted")
+
+    return redirect("dictionary:definition.index")

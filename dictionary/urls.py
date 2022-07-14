@@ -24,7 +24,11 @@ urlpatterns = [
         "definition/<int:id>/delete", views.definition_delete, name="definition.delete"
     ),
     path("translation", views.translation_index, name="translation.index"),
-    path("translation/create", views.translation_create, name="translation.create"),
+    path(
+        "translation/<int:definition_id>/create",
+        views.translation_create,
+        name="translation.create",
+    ),
     path("translation/<int:id>/edit", views.translation_edit, name="translation.edit"),
     path(
         "translation/<int:id>/delete",

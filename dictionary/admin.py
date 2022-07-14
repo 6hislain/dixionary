@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import (
     Word,
-    Profile,
     Language,
     Definition,
     DefinitionLike,
@@ -11,7 +10,6 @@ from .models import (
 
 # Register your models here.
 admin.site.register(Word)
-admin.site.register(Profile)
 admin.site.register(Language)
 admin.site.register(Definition)
 admin.site.register(Translation)

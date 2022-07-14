@@ -5,17 +5,15 @@ from django.contrib.auth.models import User, auth
 from django.http import HttpResponse
 from django.contrib import messages
 from django.db.models import Q
+from .models import Profile
 from dictionary.models import (
     Word,
-    Profile,
     Language,
     Definition,
     Translation,
 )
 
 # Create your views here.
-
-
 @require_http_methods(["GET", "POST"])
 def index(request):
     if request.method == "GET":
@@ -23,8 +21,10 @@ def index(request):
 
     elif request.method == "POST":
         keyword = request.POST["keyword"]
-        definitions = Definition.objects.filter(Q(definition__icontains=keyword))
-        translations = Translation.objects.filter(Q(translation__icontains=keyword))
+        definitions = Definition.objects.filter(Q(definition__icontains=keyword))[:50]
+        translations = Translation.objects.filter(Q(translation__icontains=keyword))[
+            :50
+        ]
 
         return render(
             request,
