@@ -22,7 +22,7 @@ class Language(models.Model):
 class Word(models.Model):
     word = models.CharField(max_length=200)
     slug = models.SlugField(null=False, unique=True)
-    image = models.ImageField(upload_to="words", blank=True)
+    image = models.ImageField(upload_to="words/%Y/%m/%d/", blank=True)
     created_at = models.DateTimeField(default=datetime.now)
     language = models.ForeignKey(Language, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

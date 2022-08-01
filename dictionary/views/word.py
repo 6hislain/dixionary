@@ -35,13 +35,7 @@ def word_create(request):
         )
 
         if request.FILES.get("image") != None:
-            new_word = Word(
-                word=word,
-                slug=slug,
-                language_id=language,
-                user_id=request.user.id,
-                image=request.FILES.get("image"),
-            )
+            new_word.image = request.FILES.get("image")
 
         new_word.save()
         messages.info(request, "Word created")
